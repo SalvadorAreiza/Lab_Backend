@@ -1,9 +1,9 @@
-package culturoteca.repository.impl;
+package culturemedia.repository.Impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import culturoteca.model.Video;
-import culturoteca.repository.VideoRepository;
+import culturemedia.model.Video;
+import culturemedia.repository.VideoRepository;
 
 public class VideoRepositoryImpl implements VideoRepository {
 
