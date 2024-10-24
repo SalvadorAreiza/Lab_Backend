@@ -6,7 +6,7 @@ import culturemedia.model.Video;
 
 public interface VideoRepository {
     // Metodo listar todos los videos
-    List<Video> listAll();
+    List<Video> findAll();
 
     // Metodo agregar video
     void save(Video video);
