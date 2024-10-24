@@ -1,20 +1,22 @@
-package culturemedia.repository.Impl;
+package culturoteca.repository.impl;
 
-import java.time.LocalDate;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.List;
 
-import culturemedia.model.View;
-import culturemedia.repository.ViewsRepository;
-import org.apache.logging.log4j.core.Logger;
-
+import culturoteca.model.View;
+import culturoteca.repository.ViewsRepository;
 
 public class ViewsRepositoryImpl implements ViewsRepository {
 
+	private final List<View> views;
 
-    @Override
-    public void view(View view) {
+	public ViewsRepositoryImpl() {
+		this.views = new ArrayList<>();
+	}
 
-    }
+	@Override
+	public View save(View view) {
+		this.views.add( view );
+		return view;
+	}
 }
