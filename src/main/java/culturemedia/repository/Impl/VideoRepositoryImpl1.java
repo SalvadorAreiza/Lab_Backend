@@ -14,8 +14,9 @@ public class VideoRepositoryImpl1 implements VideoRepository {
     }
 
     @Override
-    public void save(Video video) {
+    public List<Video> save(Video video) {
 
+        return video;
     }
 
     @Override
