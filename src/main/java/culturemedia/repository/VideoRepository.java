@@ -2,14 +2,18 @@ package culturemedia.repository;
 
 import java.util.List;
 
+import culturemedia.exception.VideoNotFoundException;
 import culturemedia.model.Video;
+import culturemedia.model.View;
 
 public interface VideoRepository {
     // Metodo listar todos los videos
-    List<Video> findAll();
+    List<Video> findAll() throws VideoNotFoundException;
 
     // Metodo agregar video
-    void save(Video video);
+    List<Video> save(Video video);
+
+    List<View> save(View view);
 
     // Metodo listar video por titulo
     List<Video> find(String title);
