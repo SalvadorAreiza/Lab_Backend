@@ -20,4 +20,6 @@ public interface VideoRepository {
 
     // Metodo listar video por duracion
     List<Video> find(Double fromDuration, Double toDuration);
+
+    Object guardar(Video video);
 }

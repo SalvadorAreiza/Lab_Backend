@@ -88,7 +88,22 @@ class VideoRepositoryTest {
 	@Test
 	void when_FindAllVideos_should_throw_VideoNotFoundException_when_no_videos_found() {
 		videoRepository = new VideoRepositoryImpl(); // Crear un repositorio vacío
-		culturemediaService = new CultureMediaService(videoRepository);
+		culturemediaService = new CultureMediaService() {
+			@Override
+			public List<Video> findAll() throws VideoNotFoundException {
+				return List.of();
+			}
+
+			@Override
+			public List<Video> find(String title) throws VideoNotFoundException {
+				return List.of();
+			}
+
+			@Override
+			public List<Video> find(double minDuration, double maxDuration) throws VideoNotFoundException {
+				return List.of();
+			}
+		};
 
 		assertThrows(VideoNotFoundException.class, () -> culturemediaService.findAll(),
 				"Se esperaba VideoNotFoundException cuando no hay videos.");
