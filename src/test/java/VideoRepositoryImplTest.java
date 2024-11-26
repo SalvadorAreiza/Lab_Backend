@@ -11,6 +11,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.Mockito;
 
+import java.util.List;
+import java.util.function.BooleanSupplier;
+
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -43,10 +46,10 @@ public class VideoRepositoryImplTest {
         when(mockRepository.guardar(video)).thenReturn(true);
 
         // Llamar al método real
-        boolean resultado = videoService.guardarVideo(video);
+        List<Video> resultado = videoService.save(video);
 
         // Verificar el resultado
-        assertTrue(resultado);
+        assertTrue((BooleanSupplier) resultado);
 
         // Verificar interacción con el mock
         verify(mockRepository).guardar(video);

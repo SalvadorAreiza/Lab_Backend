@@ -24,12 +24,12 @@ class VideoRepositoryTest {
 
 
 		// Agregar videos al repositorio en el metodo init:
-		List<Video> videos = List.of(new Video("01", "Título 1", "----", 4.5),
-										   new Video("02", "Título 2", "----", 5.5),
-										   new Video("03", "Título 3", "----", 4.4),
-										   new Video("04", "Título 4", "----", 3.5),
-										   new Video("05", "Clic 5", "----", 5.7),
-									 	   new Video("06", "Clic 6", "----", 5.1));
+		List<Video> videos = List.of(new Video("01", "Título 1", "----"),
+										   new Video("02", "Título 2", "----"),
+										   new Video("03", "Título 3", "----"),
+										   new Video("04", "Título 4", "----"),
+										   new Video("05", "Clic 5", "----"),
+									 	   new Video("06", "Clic 6", "----"));
 
 		// Guardar los videos en el repositorio
 		for ( Video video : videos ) {
@@ -102,6 +102,26 @@ class VideoRepositoryTest {
 			@Override
 			public List<Video> find(double minDuration, double maxDuration) throws VideoNotFoundException {
 				return List.of();
+			}
+
+			@Override
+			public Video findById(Long id) throws VideoNotFoundException {
+				return null;
+			}
+
+			@Override
+			public List<Video> save(Video video) {
+				return List.of();
+			}
+
+			@Override
+			public boolean existsById(Long id) {
+				return false;
+			}
+
+			@Override
+			public void deleteById(Long id) {
+
 			}
 		};
 

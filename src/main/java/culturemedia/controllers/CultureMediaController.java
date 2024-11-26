@@ -7,6 +7,8 @@ import culturemedia.model.Video;
 import culturemedia.service.CultureMediaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -30,12 +32,13 @@ public class CultureMediaController {
 	 * @throws VideoNotFoundException Si no se encuentran videos.
 	 */
 	@GetMapping
-	public List<Video> findAllVideos() throws VideoNotFoundException {
+	public ResponseEntity<List<Video>> findAllVideos() throws VideoNotFoundException {
 		List<Video> videos = cultureMediaService.findAll();
 		if (videos == null || videos.isEmpty()) {
-			throw new VideoNotFoundException("No se encontraron videos.");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(null); // Retorna 404 si no hay videos.
 		}
-		return videos;
+		return ResponseEntity.ok(videos);
 	}
 
 	/**
@@ -46,9 +49,13 @@ public class CultureMediaController {
 	 * @throws VideoNotFoundException Si no se encuentra el video.
 	 */
 	@GetMapping("/{id}")
-	public Video findVideoById(@PathVariable Long id) throws VideoNotFoundException {
-		return cultureMediaService.findById(id)
-				.orElseThrow(() -> new VideoNotFoundException("El video con ID " + id + " no fue encontrado."));
+	public ResponseEntity<Video> findVideoById(@PathVariable Long id) {
+		try {
+			Video video = cultureMediaService.findById(id);
+			return ResponseEntity.ok(video);
+		} catch (VideoNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
 	}
 
 	/**
@@ -58,8 +65,9 @@ public class CultureMediaController {
 	 * @return Video creado.
 	 */
 	@PostMapping
-	public Video addVideo(@RequestBody Video video) {
-		return cultureMediaService.save(video);
+	public ResponseEntity<List<Video>> addVideo(@RequestBody Video video) {
+		List<Video> createdVideo = cultureMediaService.save(video);
+		return ResponseEntity.status(HttpStatus.CREATED).body(createdVideo);
 	}
 
 	/**
@@ -71,25 +79,31 @@ public class CultureMediaController {
 	 * @throws VideoNotFoundException Si no se encuentra el video.
 	 */
 	@PutMapping("/{id}")
-	public Video updateVideo(@PathVariable Long id, @RequestBody Video video) throws VideoNotFoundException {
-		if (!cultureMediaService.existsById(id)) {
-			throw new VideoNotFoundException("El video con ID " + id + " no existe.");
+	public ResponseEntity<List<Video>> updateVideo(@PathVariable Long id, @RequestBody Video video) {
+		try {
+			if (!cultureMediaService.existsById(id)) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			}
+			video.setId(id); // Asegurar que el ID coincida.
+			List<Video> updatedVideo = cultureMediaService.save(video);
+			return ResponseEntity.ok(updatedVideo);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
-		video.setId(id); // Asegurar que el ID coincida.
-		return cultureMediaService.save(video);
 	}
 
 	/**
 	 * Elimina un video por su ID.
 	 *
 	 * @param id ID del video a eliminar.
-	 * @throws VideoNotFoundException Si no se encuentra el video.
+	 * @return Respuesta de eliminación.
 	 */
 	@DeleteMapping("/{id}")
-	public void deleteVideo(@PathVariable Long id) throws VideoNotFoundException {
+	public ResponseEntity<Void> deleteVideo(@PathVariable Long id) {
 		if (!cultureMediaService.existsById(id)) {
-			throw new VideoNotFoundException("El video con ID " + id + " no existe.");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 		cultureMediaService.deleteById(id);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }

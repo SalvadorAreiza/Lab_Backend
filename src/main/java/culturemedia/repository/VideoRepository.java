@@ -1,6 +1,7 @@
 package culturemedia.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import culturemedia.exception.VideoNotFoundException;
 import culturemedia.model.Video;
@@ -22,4 +23,6 @@ public interface VideoRepository {
     List<Video> find(Double fromDuration, Double toDuration);
 
     Object guardar(Video video);
+
+    Optional<Video> findById(Long id);
 }
